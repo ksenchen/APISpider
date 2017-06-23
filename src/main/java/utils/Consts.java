@@ -1,6 +1,8 @@
 package utils;
 
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -9,8 +11,9 @@ import model.HtmlInfo;
 import model.LocalHtmlInfo;
 
 public class Consts {
+	private static Properties application = new Properties();
 	public static String HOST = null;
-	public static String LOCAL_ROOT = "D:/MyDownload";
+	public static String LOCAL_ROOT = application.getProperty("local_root") != null? application.getProperty("local_root") : "../../../Download";
 	public static String PROSTFIX_HTML = ".html";
 	public static Set<String> FILE_CACHE = new HashSet<>();
 	
@@ -23,5 +26,14 @@ public class Consts {
 	}
 	public static Integer getCounter(){
 		return counter;
+	}
+	
+	static{
+		application = new Properties();
+		try {
+			application.load(Consts.class.getResourceAsStream("/applications.properties"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
